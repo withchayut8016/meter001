@@ -9,20 +9,85 @@
         table { margin: 20px auto; border-collapse: collapse; }
         th, td { border: 1px solid #ccc; padding: 8px; }
         th { background-color: #f2f2f2; }
-    </style>
+        h1 { font-size: 24spx; color: black;}
+        label { font-size: 18px; color: black;}
+        h2 { font-size: 18px; color: black;}
+</style>
 </head>
 <body>
     <h1>จดมิเตอร์ไฟ by หูเต๋า</h1>
     <label>เลือกห้อง:</label>
-    <select id="room">
-        <option value="">-- เลือกห้อง --</option>
-        <option value="ห้อง 101">ห้อง 101</option>
-        <option value="ห้อง 102">ห้อง 102</option>
-        <option value="ห้อง 103">ห้อง 103</option>
+    <select id="room" onchange="loadLastMeter()">
+    <option value="">-- เลือกห้อง --</option>
+    <option value="101 เจ้าอาวาส">เจ้าอาวาส</option>
+    <option value="102 พระครูสังฆรักษ์ทรงศักดิ์ ธมฺมกาโม">พระครูสังฆรักษ์ทรงศักดิ์ ธมฺมกาโม</option>
+    <option value="103 พระรุ่งตะวัน ปุญฺญพโล">พระรุ่งตะวัน ปุญฺญพโล</option>
+    <option value="104 พระประหยัด ฐิตธมฺโม">พระประหยัด ฐิตธมฺโม</option>
+    <option value="105 พระครูปลัดณัฐวุฒิ จกฺกธมฺโม">พระครูปลัดณัฐวุฒิ จกฺกธมฺโม</option>
+    <option value="106 พระจักรพันธ์ ผาสุกธมฺโม">พระจักรพันธ์ ผาสุกธมฺโม</option>
+    <option value="107 พระสุวิทย์ ฐานจาโร">พระสุวิทย์ ฐานจาโร</option>
+    <option value="108 พระชูศักดิ์ สมาหิโต">พระชูศักดิ์ สมาหิโต</option>
+    <option value="109 พระจารุพัฒน์ จนฺทวณฺโณ">พระจารุพัฒน์ จนฺทวณฺโณ</option>  
+    <option value="110 พระกมล นิปโก">พระกมล นิปโก</option>
+    <option value="111 พระสุริยน ปภากโร">พระสุริยน ปภากโร</option>
+    <option value="112 พระปิยะพล จิตฺตปุญฺโญ">พระปิยะพล จิตฺตปุญฺโญ</option>
+    <option value="113 พระสมชาย สนฺติกโร">พระสมชาย สนฺติกโร</option>
+    <option value="114 พระนิติธร จนฺทสาโร">พระนิติธร จนฺทสาโร</option>
+    <option value="115 พระมหาสนม อาภากโร">พระมหาสนม อาภากโร</option>
+    <option value="116 พระชวาลา ฐิตเตโช">พระชวาลา ฐิตเตโช</option>
+    <option value="117 พระพสุธร ภิรคุโณ">พระพสุธร ภิรคุโณ</option>
+    <option value="118 พระนพรัตน์ อนาลโย">พระนพรัตน์ อนาลโย</option>
+    <option value="119 พระปลัดชัยวัฒน์ ฐิตพโล">พระปลัดชัยวัฒน์ ฐิตพโล</option>
+    <option value="120 พระสุริยัน ธมฺมกโร">พระสุริยัน ธมฺมกโร</option>
+    <option value="121 ห้องเก็บของ (ศาลาการเปรียญ)">ห้องเก็บของ (ศาลาการเปรียญ)</option>
+    <option value="122 ศาลาการเปรียญ">ศาลาการเปรียญ</option>
+    <option value="123 พระครูสังฆรักษ์สมศักดิ์ สีลธโร">พระครูสังฆรักษ์สมศักดิ์ สีลธโร</option>
+    <option value="124 พระมหาบุญสม อาจิณฺณปุญฺโญ">พระมหาบุญสม อาจิณฺณปุญฺโญ</option>
+    <option value="125 พระครูสมุห์ณัฐวุฒิ ฐานธมฺโม">พระครูสมุห์ณัฐวุฒิ ฐานธมฺโม</option>
+    <option value="126 พระปักจุ้ย เตชปุญฺโญ">พระปักจุ้ย เตชปุญฺโญ</option>
+    <option value="127 พระครูปลัดวิชชา นาถธมฺโม">พระครูปลัดวิชชา นาถธมฺโม</option>
+    <option value="128 พระรุ่งโรจน์ วีรวฑฺฒโน">พระรุ่งโรจน์ วีรวฑฺฒโน</option>
+    <option value="129 พระครูวินัยธรกรีฑา สิริปญฺโญ">พระครูวินัยธรกรีฑา สิริปญฺโญ</option>
+    <option value="130 พระวิชัย นาถธมฺโม">พระวิชัย นาถธมฺโม</option>
+    <option value="131 พระวินัยธรกฤตลักษณ์ กลฺยาณธมฺโม">พระวินัยธรกฤตลักษณ์ กลฺยาณธมฺโม</option>
+    <option value="132 พระชลธี ปญฺญาธีโร">พระชลธี ปญฺญาธีโร</option>
+    <option value="133 พระอาจารย์ทองพูน จนฺทโชโต">พระอาจารย์ทองพูน จนฺทโชโต</option>
+    <option value="134 พระปรีดา ฐานสกฺโก">พระปรีดา ฐานสกฺโก</option>
+    <option value="135 พระจักรพงษ์ ธมฺมธโร">พระจักรพันธ์ ธมฺมธโร</option>
+    <option value="136 พระมหาธนสิทธิ์ รตนโชโต">พระมหาธนสิทธิ์ รตนโชโต</option>
+    <option value="137 พระปลัดกิตติเชษฐ์ สนฺตกาโย">พระปลัดกิตติเชษฐ์ สนฺตกาโย</option>
+    <option value="138 พระโกศล โชติธมฺโม">พระโกศล โชติธมฺโม</option>
+    <option value="139 ห้องว่าง (กุฎิเรือนไทย)">ห้องว่าง (กุฎิเรือนไทย)</option>
+    <option value="140 พระครูสมุห์กิตติศักดิ์ ธมฺมทตฺโต">พระครูสมุห์กิตติศักดิ์ ธมฺมทตฺโต</option>
+    <option value="141 พระณัฐพล อจฺจาทโร">พระณัฐพล อจฺจาทโร</option>
+    <option value="142 พระปรีชา ปริชาโน">พระปรีชา ปริชาโน</option>
+    <option value="143 โยมนาเวศ">โยมนาเวศ</option>
+    <option value="144 ห้องว่าง (กุฎิช่องลม ห้อง3)">ห้องว่าง (กุฎิช่องลม ห้อง3)</option>
+    <option value="145 พระชาญวุธ ธีรปญฺโญ">พระชาญวุธ ธีรปญฺโญ</option>
+    <option value="146 พระวิชยา ฐิตพโล">พระวิชยา ฐิตพโล</option>
+    <option value="147 ห้องว่าง (กุฎิช่องลม ห้อง6)">ห้องว่าง (กุฎิช่องลม ห้อง6)</option>
+    <option value="148 ห้องว่าง (กุฎิช่องลม ห้อง7)">ห้องว่าง (กุฎิช่องลม ห้อง7)</option>
+    <option value="149 ห้องว่าง (กุฎิช่องลม ห้อง8)">ห้องว่าง (กุฎิช่องลม ห้อง8)</option>
+    <option value="150 พระสมจิตร อภิวโร">พระสมจิตร อภิวโร</option>
+    <option value="151 พระชีวิน อคฺควโร">พระชีวิน อคฺควโร</option>
+    <option value="152 กุฏิพระใหม่">กุฏิพระใหม่</option>
+    <option value="153 ที่พักช่าง 1">ที่พักช่าง 1</option>
+    <option value="154 ที่พักช่าง 2">ที่พักช่าง 2</option>
+    <option value="155 ที่พักช่าง 3">ที่พักช่าง 3</option>
+    <option value="156 ที่พักช่าง 4">ที่พักช่าง 4</option>
+    <option value="157 ที่พักช่าง 5">ที่พักช่าง 5</option>
+    <option value="158 ที่พักช่าง 6">ที่พักช่าง 6</option>
+    <option value="159 ที่พักช่าง 7">ที่พักช่าง 7</option>
+    <option value="160 ที่พักช่าง 8">ที่พักช่าง 8</option>
+    <option value="161 ร้านโยมอ้อ">ร้านโยมอ้อ</option>
+    <option value="162 เครื่องซักผ้า (พระวินัยธรกฤตลักษณ์)">เครื่องซักผ้า (พระวินัยธรกฤตลักษณ์)</option>
+
     </select><br>
     <label>มิเตอร์เก่า:</label><input type="number" id="oldMeter" min="0" required><br>
     <label>มิเตอร์ใหม่:</label><input type="number" id="newMeter" min="0" required><br>
-    <button onclick="saveAndPrintBill()">บันทึกและพิมพ์ใบแจ้งหนี้</button>
+    <label>ยอดค้างชำระ:</label><input type="number" id="old" value="0"><br>
+    <button onclick="saveAndPrintBill()">บันทึกและพิมพ์</button>
+    <div id="result"></div>
     <h2>ประวัติการบันทึก</h2>
 <label>เรียงตาม:</label>
 <select id="sortBy" onchange="loadHistory()">
