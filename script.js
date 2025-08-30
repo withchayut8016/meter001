@@ -5,6 +5,7 @@ function saveAndPrintBill() {
     let room = document.getElementById('room').value;
     let oldMeter = parseFloat(document.getElementById('oldMeter').value);
     let newMeter = parseFloat(document.getElementById('newMeter').value);
+    let old = parseFloat(document.getElementById('old').value);
     let resultDiv = document.getElementById('result');
 
     // ตรวจสอบข้อมูล
@@ -23,6 +24,7 @@ function saveAndPrintBill() {
 
     let units = newMeter - oldMeter;
     let bill = units * 7;
+    let total = old + bill;
 
     // สร้างวันที่และเดือนปัจจุบัน
     let today = new Date();
@@ -53,21 +55,23 @@ function saveAndPrintBill() {
     printWindow.document.write(`
         <html>
         <head>
-            <title>ใบแจ้งหนี้</title>
+            <title>ใบค่าไฟ</title>
             <style>
                 body { font-family: Arial; text-align: center; }
-                h2 { color: navy; }
-                p { font-size: 16px; }
                 button { padding: 10px 20px; margin-top: 20px; }
+                h2 { font-size: 16px; color: black;}
+                p { font-size: 16px; color: black;}
             </style>
         </head>
         <body>
             <h2>ค่าไฟ เดือน${month} ${year}</h2>
-            <p>ห้อง: ${room}</p>
+            <p>${room}</p>
             <p>เลขมิเตอร์เก่า: ${oldMeter}</p>
             <p>เลขมิเตอร์ใหม่: ${newMeter}</p>
             <p>จำนวนหน่วยที่ใช้: ${units}</p>
-            <p>ค่าไฟ: ${bill} บาท</p>
+            <p>ค่าไฟ (หน่วย x 7): ${bill} บาท</p>
+            <p>ค้างชำระ: ${old} บาท</p>
+            <p>รวมทั้งสิ้น: ${total} บาท</p>
             <button onclick="window.print()">พิมพ์</button>
         </body>
         </html>
@@ -94,15 +98,25 @@ function loadHistory() {
     // เรียงลำดับข้อมูล
     history.sort((a, b) => {
         if (sortBy === 'room') {
-            const roomA = parseInt(a.room.replace('ห้อง ', ''));
-            const roomB = parseInt(b.room.replace('ห้อง ', ''));
+            // เรียงตามเลขห้อง
+            const roomA = parseInt(a.room.split(' ')[0]);
+            const roomB = parseInt(b.room.split(' ')[0]);
             return roomA - roomB;
         } else if (sortBy === 'month') {
+            // เรียงตามปีก่อน
             if (a.year !== b.year) {
                 return a.year - b.year;
             }
-            return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+            // ถ้าปีเท่ากัน เรียงตามเดือน
+            if (monthOrder.indexOf(a.month) !== monthOrder.indexOf(b.month)) {
+                return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+            }
+            // ถ้าเดือนเท่ากัน เรียงตามเลขห้อง
+            const roomA = parseInt(a.room.split(' ')[0]);
+            const roomB = parseInt(b.room.split(' ')[0]);
+            return roomA - roomB;
         } else if (sortBy === 'bill') {
+            // เรียงตามค่าไฟจากมากไปน้อย
             return b.bill - a.bill;
         }
     });
@@ -123,7 +137,6 @@ function loadHistory() {
         historyBody.appendChild(row);
     });
 }
-
 // ฟังก์ชันลบประวัติทั้งหมด
 function clearHistory() {
     // ขอการยืนยันจากผู้ใช้
@@ -135,4 +148,45 @@ function clearHistory() {
         // แจ้งเตือน
         document.getElementById('result').innerHTML = "ลบประวัติทั้งหมดเรียบร้อยน้า!";
     }
+}
+// ฟังก์ชันดึงเลขมิเตอร์ครั้งล่าสุดของห้องที่เลือก
+function loadLastMeter() {
+    let room = document.getElementById('room').value;
+    let oldMeterInput = document.getElementById('oldMeter');
+    let newMeterInput = document.getElementById('newMeter');
+    let resultDiv = document.getElementById('result');
+
+    // ล้างช่อง input ก่อน
+    oldMeterInput.value = '';
+    newMeterInput.value = '';
+
+    if (!room || room === "-- เลือกห้อง --") {
+        resultDiv.innerHTML = "กรุณาเลือกห้องน้า!";
+        return;
+    }
+
+    // ดึงประวัติจาก localStorage
+    let history = JSON.parse(localStorage.getItem('meterHistory')) || [];
+    // กรองเฉพาะบันทึกของห้องที่เลือก
+    let roomHistory = history.filter(record => record.room === room);
+
+    if (roomHistory.length === 0) {
+        resultDiv.innerHTML = 'ไม่มีประวัติน้า! กรุณากรอกเลขมิเตอร์ใหม่';
+        return;
+    }
+
+    // หาบันทึกครั้งล่าสุดโดยเรียงตามปีและเดือน
+    const monthOrder = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", 
+                        "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+    let latestRecord = roomHistory.sort((a, b) => {
+        if (a.year !== b.year) {
+            return b.year - a.year; // ปีมากกว่ามาก่อน
+        }
+        return monthOrder.indexOf(b.month) - monthOrder.indexOf(a.month); // เดือนล่าสุดมาก่อน
+    })[0];
+
+    // ใส่ค่า newMeter จากครั้งล่าสุดลงใน oldMeter
+    oldMeterInput.value = latestRecord.newMeter;
+    newMeterInput.value = ''; // ทิ้งให้ว่างเพื่อให้ผู้ใช้กรอกเลขมิเตอร์ใหม่
+    resultDiv.innerHTML = 'ดึงเลขมิเตอร์ครั้งล่าสุดเรียบร้อยน้า!';
 }
