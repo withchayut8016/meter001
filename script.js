@@ -41,9 +41,7 @@ function saveAndPrintBill() {
         oldMeter: oldMeter,
         newMeter: newMeter,
         units: units,
-        bill: bill,
-        old: old,
-        total: total,
+        bill: bill
     };
     let history = JSON.parse(localStorage.getItem('meterHistory')) || [];
     history.push(record);
@@ -84,7 +82,6 @@ function saveAndPrintBill() {
     document.getElementById('room').value = '';
     document.getElementById('oldMeter').value = '';
     document.getElementById('newMeter').value = '';
-    document.getElementById('old').value = 0;
     resultDiv.innerHTML = "บันทึกและพิมพ์เรียบร้อยค่า!";
 }
 
@@ -124,31 +121,6 @@ function loadHistory() {
         }
     });
 
-    historyBody.innerHTML = '';
-    history.forEach((record, index) => {
-        let row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${record.month}</td>
-            <td>${record.year}</td>
-            <td>${record.room}</td>
-            <td>${record.oldMeter}</td>
-            <td>${record.newMeter}</td>
-            <td>${record.units}</td>
-            <td>${record.bill}</td>
-            <td>${record.old || 0}</td>
-            <td>${record.total || record.bill}</td>
-            <td><button onclick="deleteRecord(${index})" style="color: black;  cursor: pointer;">ลบ</button></td>
-        `;
-        historyBody.appendChild(row);
-    });
-}
-
-function clearHistory() {
-    if (confirm("แน่ใจนะคะว่าอยากลบประวัติทั้งหมด? ข้อมูลจะหายหมดเลยคะ!")) {
-        localStorage.removeItem('meterHistory');
-        loadHistory();
-        showAlert("ลบประวัติทั้งหมดเรียบร้อยค่า!");
-    }
     // ล้างตารางและแสดงข้อมูล
     historyBody.innerHTML = '';
     history.forEach(record => {
@@ -161,8 +133,6 @@ function clearHistory() {
             <td>${record.newMeter}</td>
             <td>${record.units}</td>
             <td>${record.bill}</td>
-            <td>${record.old}</td>
-            <td>${record.total}</td>
         `;
         historyBody.appendChild(row);
     });
@@ -170,7 +140,7 @@ function clearHistory() {
 // ฟังก์ชันลบประวัติทั้งหมด
 function clearHistory() {
     // ขอการยืนยันจากผู้ใช้
-    if (confirm("แน่ใจนะคะว่าอยากลบประวัติทั้งหมด? ข้อมูลจะหายหมดเลยคะ!")) {
+    if (confirm("แน่ใจนะคะว่าอยากลบประวัติทั้งหมด? ข้อมูลจะหายหมดเลยนะคะ!")) {
         // ลบข้อมูลใน localStorage
         localStorage.removeItem('meterHistory');
         // อัปเดตตาราง
@@ -220,24 +190,3 @@ function loadLastMeter() {
     newMeterInput.value = ''; // ทิ้งให้ว่างเพื่อให้ผู้ใช้กรอกเลขมิเตอร์ใหม่
     resultDiv.innerHTML = 'ดึงเลขมิเตอร์ครั้งล่าสุดเรียบร้อยค่า!';
 }
-function deleteRecord(index) {
-    let history = JSON.parse(localStorage.getItem('meterHistory')) || [];
-    if (index < 0 || index >= history.length) {
-        showAlert("ไม่พบรายการที่ต้องการลบค่า!");
-        return;
-    }
-
-    let record = history[index];
-    if (confirm('แน่ใจนะคะว่าอยากลบรายการนี้? ข้อมูลจะหายนะคะ!')) {
-        history.splice(index, 1);
-        localStorage.setItem('meterHistory', JSON.stringify(history));
-        loadHistory();
-        showAlert('ลบรายการเรียบร้อยค่า!');
-    }
-}
-
-
-
-
-
-
