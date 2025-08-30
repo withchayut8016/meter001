@@ -10,15 +10,15 @@ function saveAndPrintBill() {
 
     // ตรวจสอบข้อมูล
     if (!room || room === "-- เลือกห้อง --") {
-        resultDiv.innerHTML = "กรุณาเลือกห้องค่า!";
+        resultDiv.innerHTML = "กรุณาเลือกห้องน้า!";
         return;
     }
     if (isNaN(oldMeter) || isNaN(newMeter)) {
-        resultDiv.innerHTML = "กรุณากรอกมิเตอร์ให้ถูกต้องค่า!";
+        resultDiv.innerHTML = "กรุณากรอกมิเตอร์ให้ถูกต้องน้า!";
         return;
     }
     if (newMeter < oldMeter) {
-        resultDiv.innerHTML = "มิเตอร์ใหม่ต้องมากกว่าหรือเท่ากับมิเตอร์เก่าค่า!";
+        resultDiv.innerHTML = "มิเตอร์ใหม่ต้องมากกว่าหรือเท่ากับมิเตอร์เก่าน้า!";
         return;
     }
 
@@ -85,7 +85,7 @@ function saveAndPrintBill() {
     document.getElementById('oldMeter').value = '';
     document.getElementById('newMeter').value = '';
     document.getElementById('old').value = 0;
-    resultDiv.innerHTML = "บันทึกและพิมพ์เรียบร้อยค่า!";
+    resultDiv.innerHTML = "บันทึกและพิมพ์เรียบร้อยน้า!";
 }
 
 // ฟังก์ชันโหลดและแสดงประวัติ
@@ -144,10 +144,10 @@ function loadHistory() {
 }
 
 function clearHistory() {
-    if (confirm("แน่ใจนะคะว่าอยากลบประวัติทั้งหมด? ข้อมูลจะหายหมดเลยคะ!")) {
+    if (confirm("แน่ใจน้า ว่าอยากลบประวัติทั้งหมด? ข้อมูลจะหายหมดเลยน้า!")) {
         localStorage.removeItem('meterHistory');
         loadHistory();
-        showAlert("ลบประวัติทั้งหมดเรียบร้อยค่า!");
+        showAlert("ลบประวัติทั้งหมดเรียบร้อยน้า!");
     }
     // ล้างตารางและแสดงข้อมูล
     historyBody.innerHTML = '';
@@ -170,13 +170,13 @@ function clearHistory() {
 // ฟังก์ชันลบประวัติทั้งหมด
 function clearHistory() {
     // ขอการยืนยันจากผู้ใช้
-    if (confirm("แน่ใจนะคะว่าอยากลบประวัติทั้งหมด? ข้อมูลจะหายหมดเลยคะ!")) {
+    if (confirm("แน่ใจน้า ว่าอยากลบประวัติทั้งหมด? ข้อมูลจะหายหมดเลยน้า!")) {
         // ลบข้อมูลใน localStorage
         localStorage.removeItem('meterHistory');
         // อัปเดตตาราง
         loadHistory();
         // แจ้งเตือน
-        document.getElementById('result').innerHTML = "ลบประวัติทั้งหมดเรียบร้อยค่า!";
+        document.getElementById('result').innerHTML = "ลบประวัติทั้งหมดเรียบร้อยน้า!";
     }
 }
 // ฟังก์ชันดึงเลขมิเตอร์ครั้งล่าสุดของห้องที่เลือก
@@ -191,7 +191,7 @@ function loadLastMeter() {
     newMeterInput.value = '';
 
     if (!room || room === "-- เลือกห้อง --") {
-        resultDiv.innerHTML = "กรุณาเลือกห้องค่า!";
+        resultDiv.innerHTML = "กรุณาเลือกห้องน้า!";
         return;
     }
 
@@ -201,7 +201,7 @@ function loadLastMeter() {
     let roomHistory = history.filter(record => record.room === room);
 
     if (roomHistory.length === 0) {
-        resultDiv.innerHTML = 'ไม่มีประวัติค่า! กรุณากรอกเลขมิเตอร์ใหม่';
+        resultDiv.innerHTML = 'ไม่มีประวัติน้า! กรุณากรอกเลขมิเตอร์ใหม่';
         return;
     }
 
@@ -218,24 +218,23 @@ function loadLastMeter() {
     // ใส่ค่า newMeter จากครั้งล่าสุดลงใน oldMeter
     oldMeterInput.value = latestRecord.newMeter;
     newMeterInput.value = ''; // ทิ้งให้ว่างเพื่อให้ผู้ใช้กรอกเลขมิเตอร์ใหม่
-    resultDiv.innerHTML = 'ดึงเลขมิเตอร์ครั้งล่าสุดเรียบร้อยค่า!';
+    resultDiv.innerHTML = 'ดึงเลขมิเตอร์ครั้งล่าสุดเรียบร้อยน้า!';
 }
 function deleteRecord(index) {
     let history = JSON.parse(localStorage.getItem('meterHistory')) || [];
     if (index < 0 || index >= history.length) {
-        showAlert("ไม่พบรายการที่ต้องการลบค่า!");
+        showAlert("ไม่พบรายการที่ต้องการลบน้า!");
         return;
     }
 
     let record = history[index];
-    if (confirm('แน่ใจนะคะว่าอยากลบรายการนี้? ข้อมูลจะหายนะคะ!')) {
+    if (confirm('แน่ใจน้า ว่าอยากลบรายการนี้? ข้อมูลจะหายน้า!')) {
         history.splice(index, 1);
         localStorage.setItem('meterHistory', JSON.stringify(history));
         loadHistory();
-        showAlert('ลบรายการเรียบร้อยค่า!');
+        showAlert('ลบรายการเรียบร้อยน้า!');
     }
 }
-
 
 
 
