@@ -136,7 +136,7 @@ function loadHistory() {
             <td>${record.units}</td>
             <td>${record.bill}</td>
             <td>${record.old || 0}</td>
-            <td>${record.total || record.bill}</td>
+            <td>${record.total || record.total}</td>
             <td><button onclick="deleteRecord(${index})" style="color: black;  cursor: pointer;">ลบ</button></td>
         `;
         historyBody.appendChild(row);
@@ -235,6 +235,7 @@ function deleteRecord(index) {
         showAlert('ลบรายการเรียบร้อยค่า!');
     }
 }
+
 
 
 
