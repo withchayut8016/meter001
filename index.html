@@ -5,11 +5,11 @@
     <style>
         body { font-family: Arial; text-align: center; }
         select, input, button { margin: 10px; padding: 5px; }
-        #result { margin-top: 20px; color: red; }
+        #result { margin-top: 20px; color: red; font-weight: bold; }
         table { margin: 20px auto; border-collapse: collapse; }
         th, td { border: 1px solid #ccc; padding: 8px; }
         th { background-color: #f2f2f2; }
-        h1 { font-size: 24spx; color: black;}
+        h1 { font-size: 30px; color: black;}
         label { font-size: 18px; color: black;}
         h2 { font-size: 18px; color: black;}
 </style>
@@ -88,13 +88,13 @@
     <button onclick="saveAndPrintBill()">บันทึกและพิมพ์</button>
     <div id="result"></div>
     <h2>ประวัติการบันทึก</h2>
-<label>เรียงตาม:</label>
-<select id="sortBy" onchange="loadHistory()">
+    <label>เรียงตาม:</label>
+    <select id="sortBy" onchange="loadHistory()">
     <option value="room">ห้อง</option>
     <option value="month">เดือน</option>
     <option value="bill">ค่าไฟ</option>
-</select><br>
-<table id="historyTable">
+    </select><br>
+    <table id="historyTable">
     <thead>
         <tr>
             <th>เดือน</th>
@@ -110,8 +110,10 @@
         </tr>
     </thead>
     <tbody id="historyBody"></tbody>
-</table>
-<button onclick="clearHistory()">ลบประวัติทั้งหมด</button>
+    </table>
+    <button onclick="clearHistory()">ลบประวัติทั้งหมด</button>
+    <button onclick="exportHistory()">ดาวน์โหลดประวัติ</button>
+    <input type="file" id="importFile" accept=".json" onchange="importHistory(event)">
     <script src="script.js"></script>
 </body>
 </html>
