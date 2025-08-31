@@ -236,7 +236,86 @@ function deleteRecord(index) {
     }
 }
 
+function exportHistory() {
+    try {
+        let history = JSON.parse(localStorage.getItem('meterHistory')) || [];
+        if (!Array.isArray(history) || history.length === 0) {
+            showAlert("ไม่มีประวัติให้ดาวน์โหลดน้า!");
+            return;
+        }
+        let dataStr = JSON.stringify(history, null, 2);
+        let blob = new Blob([dataStr], { type: 'application/json' });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'meterHistory.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showAlert("ดาวน์โหลดประวัติเรียบร้อยน้า!");
+    } catch (error) {
+        showAlert("เกิดข้อผิดพลาดในการดาวน์โหลด: " + error.message);
+        console.error("Export error:", error);
+    }
+}
 
+function importHistory(event) {
+    try {
+        let file = event.target.files[0];
+        if (!file) {
+            showAlert("กรุณาเลือกไฟล์ JSON น้า!");
+            return;
+        }
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                let importedHistory = JSON.parse(e.target.result);
+                if (!Array.isArray(importedHistory)) {
+                    showAlert("ไฟล์ JSON ไม่ถูกต้องน้า! ต้องเป็น array ของประวัติ");
+                    return;
+                }
+                // ตรวจสอบโครงสร้างข้อมูล
+                let invalidRecords = importedHistory.filter(record => 
+                    !record.room || !record.month || !record.year || 
+                    isNaN(record.oldMeter) || isNaN(record.newMeter) || 
+                    isNaN(record.units) || isNaN(record.bill) || 
+                    isNaN(record.old) || isNaN(record.total)
+                );
+                if (invalidRecords.length > 0) {
+                    showAlert("พบข้อมูลไม่ถูกต้องในไฟล์ JSON น้า! ตรวจสอบโครงสร้างข้อมูล");
+                    return;
+                }
+                // ตรวจสอบบันทึกซ้ำ
+                let existingHistory = JSON.parse(localStorage.getItem('meterHistory')) || [];
+                let duplicates = importedHistory.filter(imported => 
+                    existingHistory.some(existing => 
+                        existing.room === imported.room && 
+                        existing.month === imported.month && 
+                        existing.year === imported.year
+                    )
+                );
+                if (duplicates.length > 0) {
+                    let duplicateMsg = duplicates.map('d => ${d.room} เดือน ${d.month} ${d.year}').join(', ');
+                    showAlert('พบบันทึกซ้ำ: ${duplicateMsg} กรุณาลบรายการซ้ำก่อนนำเข้าน้า!');
+                    return;
+                }
+                // รวมข้อมูลใหม่กับข้อมูลเดิม
+                let newHistory = [...existingHistory, ...importedHistory];
+                localStorage.setItem('meterHistory', JSON.stringify(newHistory));
+                loadHistory();
+                showAlert("นำเข้าประวัติเรียบร้อยน้า!");
+            } catch (error) {
+                showAlert("เกิดข้อผิดพลาดในการนำเข้า: " + error.message);
+                console.error("Import error:", error);
+            }
+        };
+        reader.readAsText(file);
+    } catch (error) {
+        showAlert("เกิดข้อผิดพลาดในการนำเข้า: " + error.message);
+        console.error("Import error:", error);
+    }
+}
 
 
 
